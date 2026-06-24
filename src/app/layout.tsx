@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "에듀빌더(EduBuilder) - 나만의 교육용 웹앱 만들기",
+  title: "에듀빌더(EduBuilder) - 변온동물의 교육용 웹앱 만들기",
   description: "누구나 쉽고 빠르게 시작할 수 있는 최신 교육용 웹 애플리케이션 스타터 템플릿",
 };
 

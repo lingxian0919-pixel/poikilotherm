@@ -51,11 +51,11 @@ export default function Home() {
         <section className="text-center max-w-4xl mx-auto flex flex-col items-center gap-6 md:gap-8">
           {/* 배지 디자인 */}
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100/80 dark:border-indigo-900/30">
-            🚀 10분 만에 끝내는 나만의 스마트 클래스
+            🚀 10분 만에 끝내는 변온동물의 스마트 클래스
           </span>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-            나만의{" "}
+            변온동물의{" "}
             <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-sky-500 bg-clip-text text-transparent dark:from-indigo-400 dark:to-cyan-400">
               교육용 웹앱
             </span>{" "}
