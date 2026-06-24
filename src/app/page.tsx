@@ -1,6 +1,21 @@
+'use client';
+
 import Link from "next/link";
+import { useState } from "react";
+import AssessmentForm from "@/components/AssessmentForm";
+import AssessmentList from "@/components/AssessmentList";
+import AssessmentStats from "@/components/AssessmentStats";
+
+type Tab = 'student' | 'teacher';
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<Tab>('student');
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  function handleSubmitted() {
+    setRefreshKey((k) => k + 1);
+  }
+
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       {/* 백그라운드 프리미엄 그라데이션 광원 효과 */}
@@ -21,8 +36,8 @@ export default function Home() {
 
           {/* 네비게이션 바 공간 */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#" className="text-sm font-medium text-slate-600 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              대시보드
+            <Link href="#assessment" className="text-sm font-medium text-slate-600 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              수행평가
             </Link>
             <Link href="#" className="text-sm font-medium text-slate-600 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               학습 도구
@@ -30,7 +45,6 @@ export default function Home() {
             <Link href="#" className="text-sm font-medium text-slate-600 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               성적 분석
             </Link>
-            {/* // 여기에 새로운 네비게이션 메뉴 컴포넌트를 추가하세요 (예: 커뮤니티, 설정 등) */}
           </nav>
 
           <div className="flex items-center gap-4">
@@ -51,33 +65,104 @@ export default function Home() {
         <section className="text-center max-w-4xl mx-auto flex flex-col items-center gap-6 md:gap-8">
           {/* 배지 디자인 */}
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100/80 dark:border-indigo-900/30">
-            🚀 10분 만에 끝내는 변온동물의 스마트 클래스
+            🚀 Supabase 연동 수행평가 시스템
           </span>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-            변온동물의{" "}
+            스마트{" "}
             <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-sky-500 bg-clip-text text-transparent dark:from-indigo-400 dark:to-cyan-400">
-              교육용 웹앱
+              수행평가
             </span>{" "}
-            만들기
+            시스템
           </h1>
 
           <p className="max-w-2xl text-base sm:text-lg md:text-xl text-slate-600 dark:text-zinc-400 leading-relaxed">
-            어려운 백엔드 설정이나 복잡한 데이터베이스 설계 없이, 프론트엔드 중심의 깔끔하고 직관적인 템플릿으로 시작하세요. 학생들의 참여를 이끌어내는 고품질 학습 콘텐츠를 빠르게 빌드할 수 있습니다.
+            학생은 수행평가를 제출하고, 교사는 실시간으로 채점·피드백을 제공합니다.
+            모든 데이터는 Supabase 데이터베이스에 안전하게 저장됩니다.
           </p>
 
-          {/* 가짜 (Placeholder) 버튼 1개 및 시작 링크 */}
+          {/* CTA 버튼 */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full sm:w-auto">
-            <button className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 rounded-2xl shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-              새로운 학습 도구 만들기
-            </button>
+            <a
+              href="#assessment"
+              className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 rounded-2xl shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-center"
+            >
+              수행평가 시작하기 ↓
+            </a>
             <button className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:text-slate-900 dark:hover:text-white rounded-2xl transition-all duration-200">
               템플릿 둘러보기
             </button>
           </div>
         </section>
 
-        {/* 확장성 고려: 교육용 웹앱 구성 요소 영역 (Placeholder Cards) */}
+        {/* ===== 수행평가 프로그램 섹션 ===== */}
+        <section id="assessment" className="w-full max-w-5xl flex flex-col gap-8">
+          {/* 섹션 헤더 */}
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              📝 수행평가 프로그램
+            </h2>
+            <p className="text-slate-500 dark:text-zinc-500 mt-2 text-sm">
+              학생 제출부터 교사 채점까지, 모든 과정을 한 곳에서 관리하세요.
+            </p>
+          </div>
+
+          {/* 통계 카드 */}
+          <AssessmentStats key={refreshKey} />
+
+          {/* 탭 네비게이션 */}
+          <div className="flex p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800/60 border border-slate-200/60 dark:border-zinc-700/50">
+            <button
+              id="tab-student"
+              onClick={() => setActiveTab('student')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'student'
+                  ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 shadow-md'
+                  : 'text-slate-500 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300'
+              }`}
+            >
+              <span>📤</span> 학생용 제출
+            </button>
+            <button
+              id="tab-teacher"
+              onClick={() => setActiveTab('teacher')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                activeTab === 'teacher'
+                  ? 'bg-white dark:bg-zinc-900 text-indigo-600 dark:text-indigo-400 shadow-md'
+                  : 'text-slate-500 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300'
+              }`}
+            >
+              <span>📊</span> 교사용 채점
+            </button>
+          </div>
+
+          {/* 탭 콘텐츠 */}
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl border border-slate-200/80 dark:border-zinc-800/80 shadow-lg overflow-hidden">
+            {activeTab === 'student' ? (
+              <div className="p-6 sm:p-8">
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-200">수행평가 제출</h3>
+                  <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1">
+                    아래 양식을 작성하고 제출 버튼을 눌러 수행평가를 제출하세요.
+                  </p>
+                </div>
+                <AssessmentForm onSubmitted={handleSubmitted} />
+              </div>
+            ) : (
+              <div className="p-6 sm:p-8">
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-200">제출 현황 및 채점</h3>
+                  <p className="text-sm text-slate-500 dark:text-zinc-500 mt-1">
+                    제출된 수행평가를 확인하고 점수와 피드백을 입력하세요.
+                  </p>
+                </div>
+                <AssessmentList refreshKey={refreshKey} />
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* 학습 컴포넌트 예시 카드 영역 */}
         <section className="w-full max-w-5xl">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">추가할 수 있는 학습 컴포넌트 예시</h2>
@@ -131,7 +216,7 @@ export default function Home() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-800 dark:text-zinc-200 mb-2">학습 통계 (Stats)</h3>
                 <p className="text-slate-600 dark:text-zinc-400 text-sm leading-relaxed mb-4">
-                  로컬 스토리지에 누적된 오답 이력이나 최근 점수 통계를 차트 또는 그래프 형식으로 시각화해 주는 리포트 컴포넌트 영역입니다.
+                  Supabase에 누적된 수행평가 데이터를 차트 또는 그래프 형식으로 시각화해 주는 리포트 컴포넌트 영역입니다.
                 </p>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-100 dark:border-zinc-800">
@@ -161,7 +246,6 @@ export default function Home() {
             <Link href="#" className="text-xs text-slate-400 dark:text-zinc-500 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors">
               문의하기
             </Link>
-            {/* // 여기에 새로운 푸터 메뉴 컴포넌트를 추가하세요 */}
           </div>
         </div>
       </footer>
